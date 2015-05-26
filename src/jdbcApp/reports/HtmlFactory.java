@@ -18,14 +18,14 @@ import javax.swing.table.*;
  * @ date       2005-08-29
  */
 public class HtmlFactory {
-    private String _class;
+    private final String _CLASS;
     private BufferedWriter bwrite;
     
     private String fileName, suffix = ".html", reportDir = "./reports/";
     
     
     public HtmlFactory(String fileName) {
-        this._class = getClass().toString();
+        this._CLASS = getClass().toString();
         openFile(fileName);
     }
     
@@ -97,7 +97,7 @@ public class HtmlFactory {
     }
     
     public void processResultSet(String title, String[] header, ResultSet[] rs, boolean total, boolean boxed) {
-        System.out.println(_class+"/processResultSet");
+        System.out.println(_CLASS+"/processResultSet");
         int tot=0;
         writeln("<B>"+title+"</B>");
         if(boxed)
@@ -127,7 +127,7 @@ public class HtmlFactory {
             }
             if(total)
                 write("<TR><TD><B>Total</B></TD><TD>"+tot+"</TD></TR>");
-        } catch(SQLException sqle) { System.out.println(_class+"/processResultSet - "+sqle); }
+        } catch(SQLException sqle) { System.out.println(_CLASS+"/processResultSet - "+sqle); }
         writeln("</TABLE>");
         writeln("<P/>");
     }
@@ -175,7 +175,7 @@ public class HtmlFactory {
      * were stored in the hashtable.
      */
     public void processHashtable(String title, Hashtable hash, String[] order) {
-        System.out.println(_class+"/processHashtable");
+        System.out.println(_CLASS+"/processHashtable");
         writeln("<B>"+title+"</B>");
         writeln("<TABLE BORDER=1>");
         
@@ -274,11 +274,11 @@ public class HtmlFactory {
     
     public void write(String str) {
         try { bwrite.write(str);
-        } catch(IOException ioe) { System.out.println(_class+"/write(String) - "+ioe); }
+        } catch(IOException ioe) { System.out.println(_CLASS+"/write(String) - "+ioe); }
     }
      public void writeln(String str) {
         try { bwrite.write(str+"\n");
-        } catch(IOException ioe) { System.out.println(_class+"/write(String) - "+ioe); }
+        } catch(IOException ioe) { System.out.println(_CLASS+"/write(String) - "+ioe); }
     }
     
     public File getFile() { return new File(reportDir+fileName+suffix); }
@@ -288,12 +288,12 @@ public class HtmlFactory {
             if(! new File(reportDir).exists())
                 new File(reportDir).mkdir();
             bwrite = new BufferedWriter(new FileWriter(reportDir+fileName+suffix));
-        } catch(java.io.IOException ioe) { System.out.println(_class+"/openFile "+ioe); }
+        } catch(java.io.IOException ioe) { System.out.println(_CLASS+"/openFile "+ioe); }
     }
     public void closeFile() {
         try {
             bwrite.flush();
             bwrite.close();
-        } catch(java.io.IOException ioe) { System.out.println(_class+"/closeFile "+ioe); }
+        } catch(java.io.IOException ioe) { System.out.println(_CLASS+"/closeFile "+ioe); }
     }   
 }
