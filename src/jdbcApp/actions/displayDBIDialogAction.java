@@ -12,8 +12,9 @@ public class displayDBIDialogAction extends AbstractAction {
     public displayDBIDialogAction(jdbcApp owner) {
         this.owner = owner;
     }
-    public void actionPerformed(ActionEvent e) {
-        if(owner.getdbConnection().isConnected()) {
+    @Override public void actionPerformed(ActionEvent e) {
+        //if(owner.getdbConnection().isConnected()) {
+        if(owner.getdbConnectionStatus()==jdbcApp.DBCON_CONNECTED) {
             dbConnectionInfoDialog dbcd = new dbConnectionInfoDialog(owner.getdbConnection());
             dbcd.setVisible(true);
         }

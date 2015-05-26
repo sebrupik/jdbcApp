@@ -131,8 +131,9 @@ public abstract class ReportObject  extends SwingWorker<Void, Void>{
      */
     public void simpleWriteArrayInt(String qTitle, String[] cols, int[] rsAr, boolean hori) throws SQLException {
         ArrayList rows = new ArrayList<String>();
-        for (int i=0;i<cols.length;i++)
-           rows.add(cols[i]);
+        //for (int i=0;i<cols.length;i++)
+        for(String element : cols)
+           rows.add(element);
         
         for (int i=0;i<rsAr.length;i++)
            rows.add(String.valueOf(rsAr[i]));

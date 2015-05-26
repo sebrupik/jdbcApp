@@ -25,6 +25,10 @@ public abstract class jdbcApp extends JFrame {
 
     private Properties sysProps, psProps;
     private ResourceBundle psRB;
+    
+    public final static int DBCON_CONNECTED = 0;
+    public final static int DBCON_NULL = 1;
+    public final static int DBCON_NOT_CONNECTED = 1;
 
     public jdbcApp(String propsStr, String psRBStr) {
         this._class = this.getClass().getName();
@@ -144,12 +148,12 @@ public abstract class jdbcApp extends JFrame {
      */
     public int getdbConnectionStatus() { 
         if(dbCon==null) {
-            return 1;
+            return DBCON_NULL;
         } else {
             if(dbCon.isConnected()) {
-                return 0;
+                return DBCON_CONNECTED;
             } else {
-                return 2;
+                return DBCON_NOT_CONNECTED;
             }   
         }
     }
