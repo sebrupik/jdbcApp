@@ -12,7 +12,7 @@ public class dbConnection {
     private final String _class;
     private final String _server="127.0.0.1";
     private final String _username="root";
-    private final String _password="ka52hokum";
+    private final String _password="password";
 
     private String server, username, password;
     private Connection dbcon;
