@@ -201,7 +201,7 @@ public class dbConnection {
         } else { throw new NullDBConnectionException(); }
         throw new NullDBConnectionException();
     }
-
+    
     public ResultSet executeQuery(PreparedStatement ps) throws NullDBConnectionException {
         System.out.println(ps);
         //Statement stmt = null;
