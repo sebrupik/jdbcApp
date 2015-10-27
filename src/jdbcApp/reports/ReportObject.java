@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Arrays;
 import javax.swing.JButton;
 import javax.swing.JProgressBar;
 import javax.swing.SwingWorker;
@@ -127,13 +128,12 @@ public abstract class ReportObject  extends SwingWorker<Void, Void>{
     }
     
     /**
-     * I want to print the with the headers listed horizontaly
+     * I want to print the with the headers listed horizontally
      */
     public void simpleWriteArrayInt(String qTitle, String[] cols, int[] rsAr, boolean hori) throws SQLException {
-        ArrayList rows = new ArrayList<String>();
+        ArrayList<String> rows = new ArrayList<String>();
         //for (int i=0;i<cols.length;i++)
-        for(String element : cols)
-           rows.add(element);
+        rows.addAll(Arrays.asList(cols));
         
         for (int i=0;i<rsAr.length;i++)
            rows.add(String.valueOf(rsAr[i]));

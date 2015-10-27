@@ -276,11 +276,11 @@ public class miscMethods {
      * @ return     JCombobox filled with items from the ResultSet
      * @ date       2005-05-05
      */
-    public static javax.swing.JComboBox addColumnToComboBox(javax.swing.JComboBox<String> target, ResultSet res) {
+    public static javax.swing.JComboBox<String> addColumnToComboBox(javax.swing.JComboBox<String> target, ResultSet res) {
         return addColumnToComboBox(target, res, 1);
     }
 
-    public static javax.swing.JComboBox addColumnToComboBox(javax.swing.JComboBox<String> target, ResultSet res, int column) {
+    public static javax.swing.JComboBox<String> addColumnToComboBox(javax.swing.JComboBox<String> target, ResultSet res, int column) {
         try {
             while(res.next()) {
                 target.addItem(res.getObject(column).toString());

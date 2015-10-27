@@ -78,7 +78,7 @@ public class HtmlFactory {
     
     public void processResultSet(String title, boolean meta, ResultSet[] rs, boolean total) throws SQLException {
         if(meta) {
-            ArrayList al = new ArrayList();
+            ArrayList<String> al= new ArrayList<String>();
             ResultSetMetaData rsmd;
             for(int i=0;i<rs.length; i++) {
                 rsmd = rs[i].getMetaData();
