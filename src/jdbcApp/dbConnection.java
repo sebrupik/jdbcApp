@@ -8,7 +8,7 @@ import java.util.Properties;
 //import java.util.ResourceBundle;
 import java.sql.*;
 
-public class dbConnection {
+public final class dbConnection {
     private final String _class;
     private final String _server="127.0.0.1";
     private final String _username="root";
@@ -52,7 +52,7 @@ public class dbConnection {
     }
 
 
-    public void createConnection(String server, String usr, String pwd) { 
+    public final void createConnection(String server, String usr, String pwd) { 
         closeConnection();
         clearPreparedStatements();
         try {

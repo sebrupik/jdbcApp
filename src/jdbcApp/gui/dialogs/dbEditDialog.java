@@ -28,7 +28,7 @@ public class dbEditDialog extends JDialog  implements TableModelListener {
     String[] visibleFields, columnTypes;
     int row_count, updatePK;
     Pattern p = Pattern.compile(",");
-    private JComboBoxHolder JCBHolder;
+    private JComboBoxHolder _JCBHolder;
     //Properties props;
     
     JTable databaseTbl;
@@ -39,7 +39,7 @@ public class dbEditDialog extends JDialog  implements TableModelListener {
         this._class = this.getClass().getName();
         this.setLayout(new BorderLayout(2,2));
         
-        JCBHolder = new JComboBoxHolder();
+        _JCBHolder = new JComboBoxHolder();
         
         this.add(genSelectionPanel(), BorderLayout.NORTH);
         this.add(genTablePanel(), BorderLayout.CENTER);
@@ -53,9 +53,9 @@ public class dbEditDialog extends JDialog  implements TableModelListener {
     private JPanel genSelectionPanel() {
         JPanel p1 = new JPanel();
         
-        JCBHolder.addItem("TABLE", "SELECT name FROM aim_special_dbedit ORDER BY name", new JComboBox<String>());
-        JCBHolder.getJCBox("TABLE").addActionListener(new selectTableToEditAction(JCBHolder.getJCBox("TABLE")));
-        p1.add(JCBHolder.getJCBox("TABLE"));
+        _JCBHolder.addItem("TABLE", "SELECT name FROM aim_special_dbedit ORDER BY name", new JComboBox<String>());
+        _JCBHolder.getJCBox("TABLE").addActionListener(new selectTableToEditAction(_JCBHolder.getJCBox("TABLE")));
+        p1.add(_JCBHolder.getJCBox("TABLE"));
         
         return p1;
     }
@@ -216,7 +216,7 @@ public class dbEditDialog extends JDialog  implements TableModelListener {
     }
     
     private void initComboBoxes() {
-        JCBHolder.refreshJCBoxes(owner.getdbConnection());
+        _JCBHolder.refreshJCBoxes(owner.getdbConnection());
     }
     
     @Override public void dispose() {

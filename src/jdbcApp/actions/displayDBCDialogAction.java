@@ -16,7 +16,7 @@ public class displayDBCDialogAction extends AbstractAction {
         this.owner = owner;
         this._class = this.getClass().getName();
     }
-    public void actionPerformed(ActionEvent e) {
+    @Override public void actionPerformed(ActionEvent e) {
         try {
             sizeX = Integer.valueOf(owner.getSysProperty("sizeX.dbConnectionDialog"));
             sizeY = Integer.valueOf(owner.getSysProperty("sizeY.dbConnectionDialog"));

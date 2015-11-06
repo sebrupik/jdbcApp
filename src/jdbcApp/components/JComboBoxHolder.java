@@ -97,7 +97,7 @@ class enhancedJCBox {
     JComboBox<String> target;
     boolean ps; //add please select
     boolean edit;
-    private String _pleaseSelect = "Please Select";
+    private final String _PLEASESELECT = "Please Select";
     
     public enhancedJCBox(String name, String source, JComboBox<String> target) {
         this(name, source, target, true, false);
@@ -131,7 +131,7 @@ class enhancedJCBox {
     public void update(dbConnection con) {
         target.removeAllItems();
         if(ps)
-            target.addItem(_pleaseSelect);
+            target.addItem(_PLEASESELECT);
         
         if(source != null)
             target = miscMethods.addColumnToComboBox(target, con.executeQuery(source));
@@ -149,7 +149,7 @@ class enhancedJCBox {
         } else { 
             if( !this.contains((DefaultComboBoxModel)target.getModel(), item)) {
                 if(ps) {
-                    target.setSelectedItem(_pleaseSelect);
+                    target.setSelectedItem(_PLEASESELECT);
                 } else {
                     System.out.println(_class+"/setSelectedItem - I don't have the following item so I'll add it : "+item);
                     target.addItem(item.toString());

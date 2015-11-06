@@ -53,11 +53,11 @@ public class miscMethods {
     }
 
     public static String convertTimeToString(Time time) {
-        String t = "";
+        //String t = "";
         String[] segs =  time.toString().split(":");
-        t = segs[0]+segs[1];
+        //t = segs[0]+segs[1];
 
-        return t;
+        return segs[0]+segs[1];
     }
 
     public static int convertYNtoBool(String str) {
@@ -89,12 +89,7 @@ public class miscMethods {
     }
 
     public static boolean convertBooltoTF(int val) {
-        if(val==0)
-            return false;
-        else if(val==1)
-            return true;
-        else
-            return false;
+        return val==1;
     }
 
     /**
@@ -158,6 +153,12 @@ public class miscMethods {
     /**
      *
      * If workWeek true then the only time between 0900 and 1700 mon-fri is counted
+     * @param startDate
+     * @param startTime
+     * @param endDate
+     * @param endTime
+     * @param workWeek
+     * @return 
      */
     public static int calcDuration(java.sql.Date startDate, java.sql.Time startTime, java.sql.Date endDate, java.sql.Time endTime, boolean workWeek) {
         int minutes = 0;
@@ -273,8 +274,8 @@ public class miscMethods {
      * This method was created to replace the bulky 3 lines of code previously used
      * for each JCombobox, with a now more streamlined one line call to this method
      *
-     * @ return     JCombobox filled with items from the ResultSet
-     * @ date       2005-05-05
+     * @return     JCombobox filled with items from the ResultSet
+     * @date       2005-05-05
      */
     public static javax.swing.JComboBox<String> addColumnToComboBox(javax.swing.JComboBox<String> target, ResultSet res) {
         return addColumnToComboBox(target, res, 1);
@@ -384,38 +385,6 @@ public class miscMethods {
         
         return obj;
     }
-    /*
-    public static Hashtable rsToHashtable(ResultSet rs) throws SQLException {
-        Hashtable hash = new Hashtable();
-        ResultSetMetaData rsmd = rs.getMetaData();
-        rs.last();
-        int rc = rs.getRow();
-        rs.beforeFirst();
-        
-        String colName;
-        Object[] obj;
-        int curRow = 1;
-        while(rs.next()) {
-            for(int i=0; i<rsmd.getColumnCount(); i++) {
-                colName = rsmd.getColumnName(i+1);
-                System.out.println(colName);
-                if(hash.containsKey(colName)) {
-                    System.out.println("ADDING TO: "+colName);
-                    obj = (Object[])hash.get(colName);
-                    obj[curRow] = rs.getObject(i+1);
-                    hash.put(colName, obj);
-                } else {
-                    System.out.println("NEW: "+colName);
-                    obj = new Object[rc+1];
-                    obj[0] = colName;
-                    obj[1] = rs.getObject(i+1);
-                    hash.put(colName, obj);
-                }
-                curRow++;
-            }
-        }
-        return hash;
-    }*/
     
     public static HashMap rsToHashmap(ResultSet rs) throws SQLException {
         HashMap<String, Object[]> hm = new HashMap<String, Object[]>();
@@ -448,6 +417,5 @@ public class miscMethods {
         }
        
         return hm;
-    }
-    
+    }  
 }

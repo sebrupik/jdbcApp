@@ -45,7 +45,7 @@ public abstract class jdbcApp extends JFrame {
             } else {
                 System.out.println("system props not loaded, so using defaults.");
             }
-            assignSystemVariables();
+            //assignSystemVariables();
         } catch (IOException ioe) { System.out.println(ioe); }
 
 
@@ -99,19 +99,18 @@ public abstract class jdbcApp extends JFrame {
         return tmp_prop;
     }
     
-    private void savePropsToFile(String p1) {
+    private final void savePropsToFile(String p1) {
         System.out.println(_class+"/savePropsToFile - attempting to save "+p1);
         OutputStream out = null;
-        
         try {
             out = new FileOutputStream(p1);
             sysProps.store(out, "system properties");
-            
-            
-        } catch(IOException ioe) { System.out.println(_class+"/saveFiles - "+ioe); }
+            out.flush();
+            out.close();
+        } catch(IOException ioe) { System.out.println(_class+"/saveFiles - "+ioe); } 
     }
 
-    public String getSysProperty(String arg) throws IOException {
+    public final String getSysProperty(String arg) throws IOException {
         System.out.println(_class+"/getSysProperty - "+arg);
         String s;
         if(sysProps==null) {
@@ -128,7 +127,7 @@ public abstract class jdbcApp extends JFrame {
     
     public Object saveSysProperty(String key, String value) { return sysProps.setProperty(key, value); }
     
-    public boolean createdbConnection(String server, String username, String password) {
+    public final boolean createdbConnection(String server, String username, String password) {
         dbCon = new dbConnection(server, username, password, sysProps, psProps);
         return true;
     }
@@ -137,9 +136,6 @@ public abstract class jdbcApp extends JFrame {
     public abstract void writeSystemVariables();
 
     /**
-     * 
-     * 
-     * 
      * @return 
      * status codes:
      * 0 : connection is live

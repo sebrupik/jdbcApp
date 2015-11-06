@@ -14,7 +14,7 @@ import javax.swing.*;
 
 public class dbConnectionDialog extends JDialog {
     private final String _class;
-    jdbcApp owner;
+    private jdbcApp _owner;
     JTextField serverAdrTxt, usrTxt;
     JPasswordField pwdTxt;
     String serverIP, userName, pwdStr;
@@ -24,7 +24,7 @@ public class dbConnectionDialog extends JDialog {
     public dbConnectionDialog(jdbcApp owner) {
         super(owner, "MySQL Connection", true);
         this._class = this.getClass().getName();
-        this.owner = owner;
+        this._owner = owner;
         try {
             serverIP = owner.getSysProperty("jdbc.server");
             userName = owner.getSysProperty("jdbc.username");
@@ -104,21 +104,22 @@ public class dbConnectionDialog extends JDialog {
 
         //conBut.addActionListener(new connectAction(dbConDialog, serverAdrTxt, usrTxt, pwdTxt));
         conBut.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent event) {
+            @Override public void actionPerformed(ActionEvent event) {
                 connect();
             }
         });
         cancelBut.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent event) {
+            @Override public void actionPerformed(ActionEvent event) {
                 dispose();
-                System.exit(0);
+                //System.exit(0);
+                _owner.closeApp();
             }
         });
     }
 
     private void connect() {
-        owner.createdbConnection(serverAdrTxt.getText(), usrTxt.getText(), String.valueOf(pwdTxt.getPassword()));
-        if(!owner.getdbConnection().isConnected()) {
+        _owner.createdbConnection(serverAdrTxt.getText(), usrTxt.getText(), String.valueOf(pwdTxt.getPassword()));
+        if(!_owner.getdbConnection().isConnected()) {
             JOptionPane.showMessageDialog(conBut, "Connection to SQL server failed." , "Error", JOptionPane.ERROR_MESSAGE);
             //owner.dbConnectionLost(true);
         } else {
@@ -129,11 +130,11 @@ public class dbConnectionDialog extends JDialog {
             //    System.exit(0);
             
             //save the settings
-            owner.saveSysProperty("jdbc.server", serverAdrTxt.getText());
-            owner.saveSysProperty("jdbc.username", usrTxt.getText());
-            owner.saveSysProperty("jdbc.password", String.valueOf(pwdTxt.getPassword()));
-            owner.saveSysProperty("sizeX.dbConnectionDialog", String.valueOf(this.getSize().width));
-            owner.saveSysProperty("sizeY.dbConnectionDialog", String.valueOf(this.getSize().height));
+            _owner.saveSysProperty("jdbc.server", serverAdrTxt.getText());
+            _owner.saveSysProperty("jdbc.username", usrTxt.getText());
+            _owner.saveSysProperty("jdbc.password", String.valueOf(pwdTxt.getPassword()));
+            _owner.saveSysProperty("sizeX.dbConnectionDialog", String.valueOf(this.getSize().width));
+            _owner.saveSysProperty("sizeY.dbConnectionDialog", String.valueOf(this.getSize().height));
         }
         this.dispose();
     }
@@ -157,14 +158,14 @@ public class dbConnectionDialog extends JDialog {
     }
 
     class keyListener implements java.awt.event.KeyListener {
-        public void keyTyped(KeyEvent e) {
+        @Override public void keyTyped(KeyEvent e) {
 	    int key = e.getKeyCode();
             if (key == KeyEvent.VK_ENTER) {
                 System.out.println("1");
             }
         }
 
-        public void keyPressed(KeyEvent e) {
+        @Override public void keyPressed(KeyEvent e) {
             int key = e.getKeyCode();
             if (key == KeyEvent.VK_ENTER) {
                 System.out.println("2");
@@ -172,13 +173,13 @@ public class dbConnectionDialog extends JDialog {
             }
         }
 
-        public void keyReleased(KeyEvent e) { }
+        @Override public void keyReleased(KeyEvent e) { }
     }
 
     class selectTextListener implements java.awt.event.FocusListener {
         JTextField target;
         public selectTextListener(JTextField target) { this.target = target; }
-        public void focusGained(FocusEvent e) { target.selectAll(); }
-        public void focusLost(FocusEvent e) { }
+        @Override public void focusGained(FocusEvent e) { target.selectAll(); }
+        @Override public void focusLost(FocusEvent e) { }
     }
 }

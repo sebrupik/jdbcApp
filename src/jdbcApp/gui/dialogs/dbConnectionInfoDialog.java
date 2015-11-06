@@ -24,8 +24,6 @@ public class dbConnectionInfoDialog extends JDialog {
             
             dbCon.getClientInfo();
             
-            
         } catch (SQLException sqle) { System.out.println(sqle); }
-        
     }
 }
