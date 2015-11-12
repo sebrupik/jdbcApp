@@ -160,9 +160,9 @@ public final class dbConnection {
         if (dbcon != null) {
             try {
                 stmt = dbcon.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
-                for(int i=0; i<ps.length; i++) {
-                    System.out.println(ps[i]);
-                    updates += ps[i].executeUpdate();
+                for (PreparedStatement p : ps) {
+                    System.out.println(p);
+                    updates += p.executeUpdate();
                 }
                 dbcon.commit();
                 //savepointTable.addRow(new Object[]{dbcon.setSavepoint(), ps[0].toString()});

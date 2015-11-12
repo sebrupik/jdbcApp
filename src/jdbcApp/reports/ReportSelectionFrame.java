@@ -181,7 +181,7 @@ public class ReportSelectionFrame extends JInternalFrame implements ActionListen
                 } else if (rop.type.equals("SOMETHING_ELSE")) {
                     tf = new JTextField("");
                 }
-            } catch (java.io.IOException ioe) { owner.exceptionEncountered(_class+"/refresh", ioe); }
+            } catch (java.io.IOException ioe) { owner.log(java.util.logging.Level.SEVERE, _class, "refresh", ioe); }
             
             if(tf!=null) {
                 rsfpp = new ReportSelectionFrameParamPanel(rop.seq);
@@ -278,9 +278,9 @@ public class ReportSelectionFrame extends JInternalFrame implements ActionListen
                     }
                 }
             } catch(java.io.IOException ioe) {
-                owner.exceptionEncountered(_class+"/assignValueToParameter", ioe);
+                owner.log(java.util.logging.Level.SEVERE, _class, "assignValueToParameter", ioe);
             } catch(java.text.ParseException pe) {
-                owner.exceptionEncountered(_class+"/assignValueToParameter", pe);
+                owner.log(java.util.logging.Level.SEVERE, _class, "assignValueToParameter", pe);
             }
         }
         

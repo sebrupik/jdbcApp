@@ -137,7 +137,7 @@ public class dbEditDialog extends JDialog  implements TableModelListener {
                     owner.getdbConnection().executeUpdate(updatePS);
                     updatePS.clearParameters();
                 }
-            } catch (SQLException sqle) { owner.exceptionEncountered(_class, sqle); }
+            } catch (SQLException sqle) { owner.log(java.util.logging.Level.SEVERE, _class, "tableChanged", sqle); }
         }
     }
     
@@ -166,7 +166,7 @@ public class dbEditDialog extends JDialog  implements TableModelListener {
                     System.out.println(_class+"/populateFields - justr added a row");
                 }
                 dtm.addRow(createBlankRow());
-            } catch(SQLException sqle) { owner.exceptionEncountered(_class+"/populatefields", sqle); }
+            } catch(SQLException sqle) { owner.log(java.util.logging.Level.SEVERE, _class, "populatesField", sqle); }
         }
         System.out.println(_class+"/populateFields - finished");
     }
@@ -211,7 +211,7 @@ public class dbEditDialog extends JDialog  implements TableModelListener {
 
                 this.populateFields(owner.getdbConnection().executeQuery(selectPS));
             }
-        } catch (SQLException sqle) { owner.exceptionEncountered(_class, sqle); }
+        } catch (SQLException sqle) { owner.log(java.util.logging.Level.SEVERE, _class, "dotheMagic", sqle); }
         
     }
     
@@ -253,7 +253,7 @@ public class dbEditDialog extends JDialog  implements TableModelListener {
                         deletePS.clearParameters();
                     }
                 }
-            } catch(SQLException sqle) { owner.exceptionEncountered(_class+"/popupUpdateAct", sqle); 
+            } catch(SQLException sqle) { owner.log(java.util.logging.Level.SEVERE, _class, "popupDeleteAct", sqle); 
             }
             
             refreshTable();

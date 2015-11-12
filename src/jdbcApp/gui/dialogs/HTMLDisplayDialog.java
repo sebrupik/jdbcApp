@@ -59,8 +59,7 @@ public class HTMLDisplayDialog extends JDialog {
             this.setPage(new URL(url));
             System.out.println("i'm the otherside of the method call...");
         } catch(java.net.MalformedURLException mue) { System.out.println(_class+"/setPage(String) - "+mue); 
-        } catch(java.io.IOException ioe) { System.out.println(_class+"/setPage(String) - "+ioe); 
-        }
+        } 
     }
     public void setPage(URL url) { 
         this.fileURL = url;

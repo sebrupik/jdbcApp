@@ -11,10 +11,14 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.sql.PreparedStatement;
+import java.util.logging.FileHandler;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.Properties;
 import java.util.ResourceBundle;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+
 
 public abstract class jdbcApp extends JFrame {
     private final String _class;
@@ -22,6 +26,9 @@ public abstract class jdbcApp extends JFrame {
     public Container content;
     private static dbConnection dbCon;
     private String propsStr, psRBStr;
+    private Logger myLogger;
+    
+    private boolean displayExceptions = false;
 
     private Properties sysProps, psProps;
     private ResourceBundle psRB;
@@ -29,21 +36,28 @@ public abstract class jdbcApp extends JFrame {
     public final static int DBCON_CONNECTED = 0;
     public final static int DBCON_NULL = 1;
     public final static int DBCON_NOT_CONNECTED = 1;
+    
 
-    public jdbcApp(String propsStr, String psRBStr) {
+    public jdbcApp(String propsStr, String psRBStr, Logger myLogger) {
         this._class = this.getClass().getName();
         this.propsStr = propsStr;
         this.psRBStr = psRBStr;
-
+        this.myLogger = myLogger;
+        
         try {
             sysProps = this.loadPropsFromFile(propsStr, true);
-            psProps = this.loadPropsFromFile(psRBStr, false);
+            psProps = this.loadPropsFromFile(psRBStr, false); 
 
             if(sysProps != null) {
                 this.setSize(Integer.parseInt(getSysProperty("sizeX")), Integer.parseInt(getSysProperty("sizeY")));
                 this.createdbConnection(getSysProperty("jdbc.server"), getSysProperty("jdbc.username"), getSysProperty("jdbc.password"));
+                if(getSysProperty("jdbcApp.displayExceptions").equals("true") )
+                    this.displayExceptions = true;
+                
+                myLogger.addHandler(new FileHandler("%t/"+myLogger.getName()));
+                
             } else {
-                System.out.println("system props not loaded, so using defaults.");
+                log(Level.INFO, _class, "jdbcApp", "system props not loaded, so using defaults.");
             }
             //assignSystemVariables();
         } catch (IOException ioe) { System.out.println(ioe); }
@@ -66,8 +80,7 @@ public abstract class jdbcApp extends JFrame {
     }
 
     public void closeApp() {
-        //save settings like window size?....
-        System.out.println(_class+" - says goodbye.");
+        log(Level.INFO, _class, "closeApp", "Goodbye");
         
         this.writeSystemVariables();
         this.savePropsToFile(propsStr);
@@ -78,7 +91,7 @@ public abstract class jdbcApp extends JFrame {
     }
     
     private Properties loadPropsFromFile(String p1, boolean external) {
-        System.out.println(_class+"/loadPropsFromFile - attempting to load "+p1);
+        log(Level.INFO, _class, "loadPropsFromFile", "Attempting to load "+p1);
         Properties tmp_prop = new java.util.Properties();
         InputStream in = null;
 
@@ -89,29 +102,29 @@ public abstract class jdbcApp extends JFrame {
                 in = this.getClass().getClassLoader().getResourceAsStream(p1);
                 
             if (in == null) {
-                System.out.println(_class+"/loadProps - "+p1+ " not found!!!");
+                log(Level.INFO, _class, "loadPropsFromFile", p1+" not found!!!");
                 tmp_prop = null;
             } else {
                 tmp_prop.load(in);
             }
-        } catch(IOException ioe) { System.out.println(_class+"/loadProps - "+ioe); }
+        } catch(IOException ioe) { log(Level.SEVERE, _class, "loadPropsFromFile", ioe); }
 
         return tmp_prop;
     }
     
     private final void savePropsToFile(String p1) {
-        System.out.println(_class+"/savePropsToFile - attempting to save "+p1);
+        log(Level.INFO, _class, "savePropsToFile", "Attempting to save "+p1);
         OutputStream out = null;
         try {
             out = new FileOutputStream(p1);
             sysProps.store(out, "system properties");
             out.flush();
             out.close();
-        } catch(IOException ioe) { System.out.println(_class+"/saveFiles - "+ioe); } 
+        } catch(IOException ioe) { log(Level.SEVERE, _class, "loadPropsFromFile", ioe); } 
     }
 
     public final String getSysProperty(String arg) throws IOException {
-        System.out.println(_class+"/getSysProperty - "+arg);
+        log(Level.INFO, _class, "getSysProperty", arg);
         String s;
         if(sysProps==null) {
             throw new IOException("Props file not loaded!");
@@ -120,7 +133,7 @@ public abstract class jdbcApp extends JFrame {
             if(s==null)
                 throw new IOException("Null value. Does field exist??");
             
-            System.out.println(_class+"/getSysProperty - value is "+s);
+            log(Level.INFO, _class, "getSysProperty", "value is "+s);
             return s;
         }
     }
@@ -156,26 +169,36 @@ public abstract class jdbcApp extends JFrame {
     public dbConnection getdbConnection() { return dbCon; }
     public static PreparedStatement getPS(String ps) throws NullPointerException { return dbCon.getPS(ps); }
     
+    
+    public void log(Level level, String sourceClass, String sourceMethod, String message) {
+        myLogger.logp(level, sourceClass, sourceMethod, message);
+    }
+    public void log(Level level, String sourceClass, String sourceMethod, Exception e) {
+        this.exceptionEncountered(level, sourceClass, sourceMethod, e);
+    }     
+            
     /**
      * Lets handle some exceptions in imaginative and useful ways!
      * 
-     * @param source
-     * @param e 
+     * @param level
+     * @param sourceClass
+     * @param sourceMethod
+     * @param e
      */
-    public void exceptionEncountered(String source, Exception e) {
+    public void exceptionEncountered(Level level, String sourceClass, String sourceMethod, Exception e) {
         if(e instanceof java.sql.SQLException) {
              java.sql.SQLException sqle = (java.sql.SQLException)e;
-             int errorCode = sqle.getErrorCode();
+             String message = "SQLException: " + sqle.getMessage() +" /n"+"SQLState: " + sqle.getSQLState()+" /n"+"VendorError: " + sqle.getErrorCode();
              
-             
+             myLogger.logp(level, sourceClass, sourceMethod, message);
         } else if(e instanceof java.io.IOException) {
             java.io.IOException ioe = (java.io.IOException)e;
-            
-            
+            myLogger.logp(level, sourceClass, sourceMethod, ioe.getMessage());
         } else {
-            
+            myLogger.logp(level, sourceClass, sourceMethod, e.toString());
         }
         
-        JOptionPane.showMessageDialog(null, source+"\n"+e.toString(), "Exception", JOptionPane.ERROR_MESSAGE);
+        if(displayExceptions)
+            JOptionPane.showMessageDialog(null, sourceClass+"/"+sourceMethod+"\n"+e.toString(), "Exception", JOptionPane.ERROR_MESSAGE);
     }
 }

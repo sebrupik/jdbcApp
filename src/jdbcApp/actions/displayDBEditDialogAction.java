@@ -20,8 +20,8 @@ public class displayDBEditDialogAction extends AbstractAction {
         try {
             sizeX = Integer.valueOf(owner.getSysProperty("sizeX.dbEditDialog"));
             sizeY = Integer.valueOf(owner.getSysProperty("sizeY.dbEditDialog"));
-        } catch (java.io.IOException ioe) { owner.exceptionEncountered(_class, ioe); 
-        } catch (java.lang.NumberFormatException nfe) { owner.exceptionEncountered(_class, nfe); }
+        } catch (java.io.IOException ioe) { owner.log(java.util.logging.Level.SEVERE, _class, "actionPerformed", ioe); 
+        } catch (java.lang.NumberFormatException nfe) { owner.log(java.util.logging.Level.SEVERE, _class, "actionPerformed", nfe); }
         
         dbEditDialog dbed = new dbEditDialog(owner);
         dbed.setSize(sizeX, sizeY);
