@@ -112,7 +112,7 @@ public abstract class jdbcApp extends JFrame {
         return tmp_prop;
     }
     
-    private final void savePropsToFile(String p1) {
+    private void savePropsToFile(String p1) {
         log(Level.INFO, _class, "savePropsToFile", "Attempting to save "+p1);
         OutputStream out = null;
         try {
