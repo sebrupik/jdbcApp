@@ -35,8 +35,9 @@ public abstract class jdbcAppDesktop extends jdbcApp {
     }
      
     protected abstract JMenuBar genMenuBar(); 
+    public abstract void createFrame(String which);
     
-    private void attemptAddingJIF(JInternalFrame jif) {
+    protected void attemptAddingJIF(JInternalFrame jif) {
         if(jif != null) {
             if(!frameExists(jif)) {
                 jif.setVisible(true);
