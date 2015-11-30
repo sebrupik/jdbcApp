@@ -44,6 +44,10 @@ public abstract class jdbcApp extends JFrame {
         this.psRBStr = psRBStr;
         this.myLogger = myLogger;
         
+        this.initComponents();
+    }
+
+    private void initComponents() {
         try {
             sysProps = this.loadPropsFromFile(propsStr, true);
             psProps = this.loadPropsFromFile(psRBStr, false); 
@@ -78,7 +82,7 @@ public abstract class jdbcApp extends JFrame {
         };
         this.addWindowListener(l);
     }
-
+    
     public void closeApp() {
         log(Level.INFO, _class, "closeApp", "Goodbye");
         
