@@ -25,6 +25,7 @@ public abstract class jdbcApp extends JFrame {
     private statusBar sBar;
     public Container content;
     private static dbConnection dbCon;
+    private static dbConnection2 dbCon2;
     private String propsStr, psRBStr;
     private Logger myLogger;
     
@@ -48,11 +49,15 @@ public abstract class jdbcApp extends JFrame {
     }
 
     private void initComponents() {
+        System.out.println(_class+"/initComponents - entered");
         try {
             sysProps = this.loadPropsFromFile(propsStr, true);
             psProps = this.loadPropsFromFile(psRBStr, false); 
 
             if(sysProps != null) {
+                myLogger.addHandler(new FileHandler("%t/"+myLogger.getName()));
+                dbCon2 = new dbConnection2(this, sysProps);
+                
                 this.setSize(Integer.parseInt(getSysProperty("sizeX")), Integer.parseInt(getSysProperty("sizeY")));
                 this.createdbConnection(getSysProperty("jdbc.server"), getSysProperty("jdbc.username"), getSysProperty("jdbc.password"));
                 if(getSysProperty("jdbcApp.displayExceptions").equals("true") )
@@ -60,8 +65,9 @@ public abstract class jdbcApp extends JFrame {
                 
                 myLogger.addHandler(new FileHandler("%t/"+myLogger.getName()));
                 
+                dbCon2 = new dbConnection2(this, sysProps);
             } else {
-                log(Level.INFO, _class, "jdbcApp", "system props not loaded, so using defaults.");
+                log(Level.INFO, _class, "initComponents", "system props not loaded, so using defaults.");
             }
             //assignSystemVariables();
         } catch (IOException ioe) { System.out.println(ioe); }
@@ -94,7 +100,7 @@ public abstract class jdbcApp extends JFrame {
         System.exit(0);
     }
     
-    private Properties loadPropsFromFile(String p1, boolean external) {
+    public Properties loadPropsFromFile(String p1, boolean external) {
         log(Level.INFO, _class, "loadPropsFromFile", "Attempting to load "+p1);
         Properties tmp_prop = new java.util.Properties();
         InputStream in = null;
@@ -171,6 +177,8 @@ public abstract class jdbcApp extends JFrame {
         }
     }
     public dbConnection getdbConnection() { return dbCon; }
+    public dbConnection2 getdbConnection2() { return dbCon2; }
+    
     public static PreparedStatement getPS(String ps) throws NullPointerException { return dbCon.getPS(ps); }
     
     
