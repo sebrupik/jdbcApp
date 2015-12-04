@@ -5,7 +5,6 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.HashMap;
-import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Properties;
 import java.util.Set;
@@ -55,7 +54,7 @@ public class dbConnection2 {
                     try {
                     System.out.println("Adding dbconobject "+ name);
                     dbConHMap.put(name, new dbCon2Object(new String[]{name,
-                                                                      props.getProperty("db."+name+".serverIP"),
+                                                                      props.getProperty("db."+name+".server"),
                                                                       props.getProperty("db."+name+".username")},
                                                                     owner.loadPropsFromFile(props.getProperty("db."+name+".psfile"),false), null));
                     } catch (java.lang.NullPointerException npe) { owner.log(Level.SEVERE, _class, "createConnectionContainers", npe); }
@@ -65,14 +64,13 @@ public class dbConnection2 {
         }
     }
     
-    private void createConnection(dbCon2Object dbco, String server, String usr, String pwd) { 
-        this.closeConnection(dbco);
-        this.clearPreparedStatements(dbco);
+    public void createConnection(String dbName, String server, String usr, String pwd) { 
+        dbCon2Object tmpDBCO = getDBCO(dbName);
+        this.closeConnection(tmpDBCO);
+        this.clearPreparedStatements(tmpDBCO);
         try {
-            dbco.connection = DriverManager.getConnection("jdbc:mysql://"+server+"?user="+usr+"&password="+pwd);
-            dbco.connection.setAutoCommit(false);
-            //this.saveProperties("lastSQLServerIP", server);
-            //this.saveProperties("lastSQLuser", usr);
+            tmpDBCO.connection = DriverManager.getConnection("jdbc:mysql://"+server+"?user="+usr+"&password="+pwd);
+            tmpDBCO.connection.setAutoCommit(false);
         } catch (SQLException sqle) { owner.log(Level.SEVERE, _class, "createConnection", sqle);
         }
     }

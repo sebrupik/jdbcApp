@@ -1,9 +1,12 @@
 package jdbcApp;
 
 import jdbcApp.actions.displayDBCDialogAction;
+import jdbcApp.actions.displayDBCDialogAction2;
 import jdbcApp.actions.displayDBIDialogAction;
 
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import javax.swing.*;
 
 public class statusBar extends JPanel {
@@ -39,38 +42,35 @@ public class statusBar extends JPanel {
         
         infoBut.addActionListener(new displayDBIDialogAction(owner));
         
-        
-        
         JPanel rightP = new JPanel();
         rightP.add(jpb);
         rightP.add(infoBut);
         rightP.add(connectBut);
-        rightP.add(mb);
+        rightP.add(this.buildDBStatus(new JPanel()));
         
         this.add(statusLbl, BorderLayout.CENTER);
         this.add(rightP, BorderLayout.EAST);
-        
-        buildDBMenu();
     }
 
     public void setStatus(String s) {
         statusLbl.setText(s);
     }
     
-    public void buildDBMenu() {
-        String[] keys = owner.getdbConnection2().getKeys();
-        JMenu tempM;
+    private JPanel buildDBStatus(JPanel target) {
+        target.removeAll();
         
-        dbMenu.removeAll();
+        String[] keys = owner.getdbConnection2().getKeys();
+        JButton but;
         
         for (String key : keys) {
-            System.out.println("adding menuitem - " +key);
-            tempM = new JMenu(key);
-            tempM.add(new JMenuItem(key + " Connect"));
-            tempM.add(new JMenuItem(key + " Status"));
-            dbMenu.add(tempM);
-            
-            mb.updateUI();
+            but = new JButton("Icon");
+            but.setToolTipText(key);
+            but.addActionListener(new displayDBCDialogAction2(owner, key));
+            target.add(but);
         }
-    }
+        
+        target.revalidate();
+        target.repaint();
+        return target;
+    } 
 }

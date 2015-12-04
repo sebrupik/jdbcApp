@@ -154,6 +154,9 @@ public abstract class jdbcApp extends JFrame {
         dbCon = new dbConnection(server, username, password, sysProps, psProps);
         return true;
     }
+    public final void createdbConnection(String dbName, String server, String username, String password) {
+        dbCon2.createConnection(dbName, server, username, password);
+    }
     
     public abstract void assignSystemVariables() throws java.io.IOException;
     public abstract void writeSystemVariables();
