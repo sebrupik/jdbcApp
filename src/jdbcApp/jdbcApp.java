@@ -97,6 +97,9 @@ public abstract class jdbcApp extends JFrame {
         
         if(dbCon != null)
             dbCon.closeConnection();
+        
+        dbCon2.closeAllConnections();
+        
         System.exit(0);
     }
     
