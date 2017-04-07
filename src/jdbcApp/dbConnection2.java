@@ -50,7 +50,7 @@ public class dbConnection2 {
      * 
      */
     private void createConnectionContainers() {
-        System.out.println("createConnectionContainers entered...");
+        System.out.println(_class+"/createConnectionContainers entered...");
         String name;
         Iterator it = ((Set<String>)props.stringPropertyNames()).iterator();
         while(it.hasNext()) {
@@ -60,7 +60,7 @@ public class dbConnection2 {
                 
                 if(!dbConHMap.containsKey(name)) {
                     try {
-                    System.out.println("Adding dbconnobject "+ name);
+                    System.out.println("Adding dbCon2Object "+ name);
                     dbConHMap.put(name, new dbCon2Object(new String[]{name,
                                                                       props.getProperty("db."+name+".server"),
                                                                       props.getProperty("db."+name+".username")},

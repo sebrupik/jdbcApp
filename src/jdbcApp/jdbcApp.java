@@ -63,9 +63,9 @@ public abstract class jdbcApp extends JFrame {
                 if(getSysProperty("jdbcApp.displayExceptions").equals("true") )
                     this.displayExceptions = true;
                 
-                myLogger.addHandler(new FileHandler("%t/"+myLogger.getName()));
+                //myLogger.addHandler(new FileHandler("%t/"+myLogger.getName()));
                 
-                dbCon2 = new dbConnection2(this, sysProps);
+                //dbCon2 = new dbConnection2(this, sysProps);
             } else {
                 log(Level.INFO, _class, "initComponents", "system props not loaded, so using defaults.");
             }
